@@ -1,4 +1,4 @@
-# Predictive Analysis of Loan Approval Classification
+  # Predictive Analysis of Loan Approval Classification
 
 ## Domain Background
 
@@ -49,32 +49,34 @@ Machine learning dapat digunakan untuk membangun sistem prediktif berbasis data 
 
 ## Data Understanding
 
-Dataset yang digunakan diambil dari Kaggle dengan judul "Loan-Solutions Elite Dataset", tersedia pada tautan berikut:
+Dataset yang digunakan dalam proyek ini adalah dataset yang men-*support* ML Loan-Solutions Elite project, sebuah model yang dirancang untuk memprediksi persetujuan pinjaman berdasarkan data keuangan pemohon. Dataset ini terdiri dari data terstruktur dan tersedia dalam format CSV. Dataset dapat diakses melalui Kaggle: https://www.kaggle.com/datasets/abhishekmishra08/loan-approval-datasets.
 
-https://www.kaggle.com/datasets/ayessa/loan-solutions-elite
+Dataset tersedia dalam format CSV dan memiliki 7 kolom:
 
-### Informasi Umum
-- Jumlah data: 24,000 baris
-- Target variabel: `Approval` (Approved / Rejected)
-- Distribusi kelas tidak seimbang:
-  - Rejected: 20,067
-  - Approved: 3,933
+- Text (string): Deskripsi alasan pengajuan pinjaman. (Tidak digunakan dalam proyek ini)
 
-### Fitur pada Data
-Beberapa fitur utama pada dataset:
-- Income
-- Credit_Score
-- Loan_Amount
-- Loan_Purpose
-- Employment_Status
-- Marital_Status
-- Education_Level
-- dan beberapa lainnya
+- Income (float): Total pendapatan pemohon.
+
+- Credit_Score (integer): Skor kredit pemohon.
+
+- Loan_Amount (float): Jumlah pinjaman yang diajukan.
+
+- DTI_Ratio (float): Debt-to-Income Ratio, yaitu rasio antara utang dan pendapatan.
+
+- Employment_Status (categorical): Status pekerjaan pemohon (misalnya employed, unemployed).
+
+- Approval (categorical - target): Status pengajuan pinjaman (Approved atau Rejected).
+
+Catatan:
+Fitur Text tidak digunakan dalam proyek ini untuk menjaga fokus pada pemodelan berbasis data numerik dan kategorikal.
 
 ### Exploratory Data Analysis
 Beberapa visualisasi dilakukan untuk memahami pola dalam data:
 
-- <eda distribusi income>
+- preview dataset
+<p align='center'>
+      <img src ="(https://github.com/faRIZky/imgs/blob/main/preview%20dataset.png)" alt="preview dataset">
+</p>
 - <eda loan purpose vs approval>
 - <eda employment status vs approval>
 - <correlation heatmap>
