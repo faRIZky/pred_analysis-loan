@@ -2,26 +2,50 @@
 
 ## Domain Background
 
-Dalam industri keuangan, permintaan pinjaman terus meningkat setiap tahunnya. Namun, proses evaluasi kelayakan peminjam yang masih konvensional sering kali tidak efisien dan rentan terhadap kesalahan penilaian. Keputusan yang tidak akurat dapat menyebabkan kerugian finansial atau kehilangan calon peminjam potensial.
+Seiring dengan meningkatnya kebutuhan masyarakat terhadap pinjaman keuangan, lembaga keuangan menghadapi tantangan besar dalam menyaring dan mengevaluasi aplikasi pinjaman secara efektif. Proses peninjauan manual terhadap aplikasi pinjaman sering kali membutuhkan waktu yang lama dan berpotensi menimbulkan bias, sehingga dibutuhkan solusi berbasis teknologi untuk meningkatkan efisiensi dan akurasi proses evaluasi.
 
-Untuk mengatasi tantangan tersebut, pendekatan berbasis machine learning dapat digunakan untuk membangun sistem prediktif. Model ini mampu mengevaluasi permohonan pinjaman secara otomatis dan tepat sasaran berdasarkan data historis yang tersedia.
+Proyek ini bertujuan untuk membangun model prediktif menggunakan machine learning guna menentukan apakah suatu aplikasi pinjaman layak disetujui atau tidak. Dengan mengandalkan kombinasi data terstruktur seperti pendapatan, rasio utang terhadap pendapatan, dan skor kredit, serta data tidak terstruktur berupa narasi dari pemohon, model ini diharapkan dapat membantu lembaga keuangan mengambil keputusan secara cepat dan tepat.
 
-Menurut penelitian Awan et al. (2020), algoritma seperti Random Forest dan Decision Tree menunjukkan performa tinggi dalam kasus klasifikasi kelayakan pinjaman, terutama saat digunakan dengan metrik akurasi sebagai tolok ukur utama.
+Proyek ini juga merujuk pada penelitian terdahulu yang dilakukan oleh Viswanatha et al. (2023) yang mengimplementasikan beberapa algoritma machine learning untuk prediksi persetujuan pinjaman dengan hasil akurasi tertinggi sebesar 83,73% menggunakan algoritma Naive Bayes. Penelitian ini menggunakan fitur-fitur serupa seperti pendapatan dan status pekerjaan, sehingga menjadi referensi yang relevan dalam pengembangan proyek ini.
+
+**Referensi:**
+
+**Prediction of loan approval in banks using machine learning approach**. Viswanatha, V., Ramachandra, A. C., Vishwas, K. N., & Adithya, G. (2023), *International Journal of Engineering and Management Research, 13(4), 7-19*.
+
+**Batasan Masalah:** 
+
+Dalam proyek ini, hanya data terstruktur yang digunakan untuk membangun model prediksi persetujuan pinjaman. Fokus model sepenuhnya pada variabel numerik dan kategorikal seperti pendapatan, skor kredit, jumlah pinjaman, rasio utang terhadap pendapatan, dan status pekerjaan.
 
 ## Business Understanding
 
-### Problem Statements
+Permintaan pinjaman semakin meningkat, namun lembaga keuangan menghadapi tantangan dalam mengevaluasi kelayakan peminjam secara efisien dan akurat. Keputusan yang salah dapat menyebabkan kerugian finansial atau kehilangan peluang bisnis.
+
+Machine learning dapat digunakan untuk membangun sistem prediktif berbasis data historis guna membantu proses persetujuan pinjaman secara otomatis dan tepat sasaran.
+
+#### **Problem Statements**
 - Bagaimana memanfaatkan data terstruktur untuk memprediksi apakah permohonan pinjaman disetujui?
+
 - Algoritma machine learning apa yang paling efektif untuk memodelkan data persetujuan pinjaman?
 
-### Goals
+#### **Goals**
 - Mengembangkan model klasifikasi untuk memprediksi persetujuan pinjaman berdasarkan fitur finansial.
+
 - Menentukan model terbaik di antara Random Forest, Naive Bayes, Decision Tree, dan KNN menggunakan metrik evaluasi.
 
-### Solution Statement
-- Membangun model klasifikasi menggunakan Random Forest, Naive Bayes, Decision Tree, dan K-Nearest Neighbors (KNN).
+#### **Solution Statement**
+- Membangun model klasifikasi menggunakan:
+
+  - Random Forest
+
+  - Naive Bayes
+
+  - Decision Tree
+
+  - K-Nearest Neighbors (KNN)
+
 - Melakukan preprocessing data terstruktur (encoding dan normalisasi).
-- Evaluasi model menggunakan akurasi, precision, recall, dan F1-score. Pemilihan model terbaik berdasarkan akurasi, sesuai referensi studi terdahulu.
+
+- Evaluasi model menggunakan akurasi, precision, recall, dan F1-score. Pemilihan model terbaik menggunakan akurasi--merujuk pada penelitian yang menjadi refrensi proyek ini. 
 
 ## Data Understanding
 
