@@ -75,7 +75,7 @@ Beberapa visualisasi dilakukan untuk memahami pola dalam data:
 
 - preview dataset
 <p align='center'>
-      <img src ="(https://github.com/faRIZky/imgs/blob/main/preview%20dataset.png?raw=true)" alt="preview dataset"> 
+      <img src ="(https://github.com/faRIZky/pred_analysis-loan/blob/main/images/preview%20dataset.png?raw=true)" alt="preview dataset"> 
 </p>
 - <eda loan purpose vs approval>
 - <eda employment status vs approval>
