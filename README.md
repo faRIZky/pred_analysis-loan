@@ -75,69 +75,312 @@ Beberapa visualisasi dilakukan untuk memahami pola dalam data:
 
 - preview dataset
 <p align='center'>
-      <img src ="(https://github.com/faRIZky/pred_analysis-loan/blob/main/images/preview%20dataset.png?raw=true)" alt="preview dataset"> 
+      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/preview%20dataset.png?raw=true" alt="preview dataset"> 
 </p>
-- <eda loan purpose vs approval>
-- <eda employment status vs approval>
-- <correlation heatmap>
+
+- cek null values
+<p align='center'>
+      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/null_values.png?raw=true" alt="null values"> 
+</p>
+Tidak ditemukan adanya null values.
+
+- Cek jumlah data
+<p align='center'>
+      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/samples.png?raw=true" alt="samples"> 
+</p>
+Terdapat 24.000 samples
+
+- Distribusi target
+<p align='center'>
+      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/distribusi%20approval.png?raw=true" alt="distribusi target"> 
+</p>
+
+`df['Approval'].value_counts()`
+
+Rejected  :	20067
+
+Approved  :	3933
+
+Grafik ini menunjukkan bahwa jumlah permohonan pinjaman yang ditolak jauh lebih banyak dibandingkan yang disetujui. Hal ini mengindikasikan ketidakseimbangan kelas dalam data, yang dapat memengaruhi performa model klasifikasi jika tidak ditangani dengan tepat.
+
+- Distribusi pendapatan
+  
+<p align='center'>
+      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/dist%20income.png?raw=true" alt="distribusi income"> 
+</p>
+
+Histogram ini memperlihatkan sebaran pendapatan pemohon pinjaman. Terlihat bahwa pendapatan tersebar cukup merata di seluruh rentang nilai, tanpa adanya konsentrasi ekstrem pada level tertentu.
+
+- Korelasi antar fitur numerik
+<p align='center'>
+      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/cor%20num.png?raw=true" alt="coor"> 
+</p>
+
+Heatmap ini menampilkan korelasi antar fitur numerik. Income berkorelasi positif dengan Loan Amount, namun negatif dengan DTI Ratio. Ini masuk akal karena pendapatan yang lebih tinggi umumnya mampu menurunkan rasio utang terhadap pendapatan.
+
+- Boxplot credit score terhadap approval
+<p align='center'>
+      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/credit%20score.png?raw=true" alt="boxplot credit approval"> 
+</p>
+
+Boxplot ini menunjukkan bahwa pemohon dengan skor kredit yang disetujui cenderung memiliki skor lebih tinggi dibandingkan yang ditolak. Artinya, skor kredit menjadi indikator penting dalam menentukan kelayakan pinjaman.
+
+- Employement status vs approval
+<p align='center'>
+      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/employent_status.png?raw=true" alt="employement status vs approval"> 
+</p>
+
+`employment_approval_counts = pd.crosstab(df['Employment_Status'], df['Approval'])`
+
+<p align='center'>
+      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/employement_approval_counts.png?raw=true" alt="employement_approval_counts"> 
+</p>
+
+Grafik ini menggambarkan hubungan antara status pekerjaan dan hasil persetujuan pinjaman. Terlihat bahwa sebagian besar pemohon yang menganggur ditolak, sedangkan yang bekerja memiliki kemungkinan lebih tinggi untuk disetujui.
+
 
 ## Data Preparation
 
-### 1. Encoding
-Fitur kategorikal seperti `Loan_Purpose`, `Employment_Status`, `Marital_Status`, dan `Education_Level` diubah ke bentuk numerik menggunakan LabelEncoder agar dapat diproses oleh model machine learning.
+Pada tahap ini kita akan:
 
-### 2. Normalisasi
-Fitur numerik seperti `Income`, `Loan_Amount`, dan `Credit_Score` dinormalisasi menggunakan StandardScaler agar memiliki skala yang seragam.
+- Menghapus kolom/feature Teks
+`df = df.drop(columns=['Text'])`
 
-### 3. Split Data
-Data dibagi menjadi data latih dan data uji dengan rasio 80:20 untuk menguji kemampuan generalisasi model.
+Kolom `Teks` tidak digunakan karena fokus model hanya pada fitur numerik dan kategorikal, sehingga dihapus untuk menyederhanakan input model.
 
-## Modeling
+- Encode kolom kategori dan target
 
-Empat algoritma klasifikasi digunakan untuk menyelesaikan permasalahan prediksi persetujuan pinjaman:
+```
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+df['Employment_Status'] = le.fit_transform(df['Employment_Status'])
+df['Approval'] = le.fit_transform(df['Approval'])  # Approved=1, Rejected=0
+```
 
-### Decision Tree
-- Mudah dipahami dan divisualisasikan.
-- Cepat diproses namun rentan overfitting.
+Label encoding diperlukan agar model dapat memproses data kategorikal seperti status pekerjaan dan target (persetujuan pinjaman), karena model hanya dapat bekerja dengan nilai numerik.
 
-### Random Forest
-- Ensemble learning yang menggabungkan banyak decision tree.
-- Lebih stabil dan akurat dibanding satu pohon tunggal.
 
-### Naive Bayes
-- Cocok untuk data dengan asumsi distribusi tertentu.
-- Cepat dan sederhana, namun performanya dapat turun jika data tidak memenuhi asumsi.
+- Pisahkan fitur dan target
 
-### K-Nearest Neighbors
-- Non-parametrik dan berbasis kedekatan jarak antar data.
-- Performa sangat dipengaruhi oleh skala dan jumlah data.
+```
+X = df.drop(columns='Approval')
+y = df['Approval']
+```
 
-Semua model dilatih menggunakan data latih, dan hasil prediksi diuji pada data uji.
+Pemisahan fitur (X) dan target (y) diperlukan untuk melatih model hanya pada fitur input, tanpa bocoran dari label target.
+
+- Standardisasi fitur numerik
+```
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+```
+
+Standardisasi digunakan agar fitur numerik berada pada skala yang sama, yang penting untuk algoritma yang sensitif terhadap skala seperti SVM dan Logistic Regression.
+
+
+- Data splitting 80/20
+```
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+```
+Data dibagi menjadi data latih dan data uji agar kita bisa mengukur performa model terhadap data yang belum pernah dilihat sebelumnya, sehingga hasil evaluasi lebih adil dan realistis.
+
+
+## Modelling
+
+Tahap ini melibatkan pembangunan beberapa model klasifikasi untuk memprediksi persetujuan pinjaman. Setiap model memiliki karakteristik dan cara kerja yang berbeda.
+- Model 1: Decision Tree
+
+Cara kerja: Decision Tree membagi data berdasarkan fitur yang memberikan informasi paling tinggi (dengan pengukuran seperti Gini atau Entropy). Setiap cabang merepresentasikan keputusan hingga mencapai leaf node (output prediksi).
+
+Parameter:
+
+`criterion='gini'`: Menggunakan indeks Gini untuk menentukan pemisahan terbaik.
+
+`random_state=42`: Untuk menjaga hasil tetap konsisten.
+
+```
+from sklearn.tree import DecisionTreeClassifier
+dt = DecisionTreeClassifier(criterion='gini', random_state=42)
+dt.fit(X_train, y_train)
+```
+Kelebihan:
+Mudah dipahami dan divisualisasikan.
+
+Tidak memerlukan normalisasi data.
+
+Kekurangan:
+Rentan overfitting jika pohon terlalu dalam.
+
+
+- Model 2: Random Forest
+Cara kerja: Random Forest membangun banyak Decision Tree dari subset data acak dan menggabungkan hasilnya (mayoritas voting) untuk meningkatkan akurasi dan mengurangi overfitting.
+
+Parameter:
+
+`n_estimators=100`: Jumlah pohon dalam forest.
+
+`random_state=42`: Untuk reprodusibilitas.
+
+```
+from sklearn.ensemble import RandomForestClassifier
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(X_train, y_train)
+```
+
+- Model 3: Naive Bayes (GaussianNB)
+Cara kerja: Naive Bayes menggunakan Teorema Bayes dengan asumsi bahwa semua fitur saling independen. GaussianNB cocok untuk data numerik yang terdistribusi normal.
+
+Parameter: Model ini tidak membutuhkan banyak tuning parameter secara eksplisit.
+
+```
+from sklearn.naive_bayes import GaussianNB
+nb = GaussianNB()
+nb.fit(X_train, y_train)
+```
+
+Kelebihan:
+Cepat dan efisien untuk dataset besar.
+
+Cocok untuk baseline model.
+
+Kekurangan:
+Asumsi independensi sering tidak realistis.
+
+Tidak bekerja baik jika fitur sangat bergantung satu sama lain.
+
+- Model 4: K-Nearest Neighbors (KNN)
+Cara kerja: KNN mengklasifikasikan data berdasarkan mayoritas label dari k data terdekat dalam ruang fitur. Jarak biasanya dihitung menggunakan Euclidean Distance.
+
+Parameter:
+
+`n_neighbors=5`: Menggunakan 5 tetangga terdekat untuk voting.
+
+`metric='minkowski'`: Default untuk menghitung Euclidean Distance.
+
+Kelebihan:
+Sederhana dan tidak memerlukan pelatihan eksplisit.
+
+Cocok untuk dataset kecil.
+
+Kekurangan:
+Tidak efisien untuk dataset besar.
+
+Sensitif terhadap skala fitur (perlu normalisasi).
+
 
 ## Evaluation
 
-Untuk mengevaluasi kinerja model klasifikasi, digunakan metrik accuracy, precision, recall, dan F1-score. Meskipun data tidak seimbang (20,067 Rejected vs 3,933 Approved), metrik accuracy tetap dijadikan dasar pemilihan model terbaik karena mengacu pada referensi penelitian sebelumnya.
+Tahap ini berfokus pada evaluasi performa dari setiap model klasifikasi yang telah dibuat sebelumnya. Karena kita menangani masalah klasifikasi (approval/disapproval), maka metrik evaluasi yang digunakan meliputi:
+
+Metrik Evaluasi yang Digunakan:
+
+Accuracy: Persentase prediksi yang benar dari seluruh data.
+Accuracy = (TP + TN) / (TP + TN + FP + FN)
+
+Precision: Proporsi prediksi positif yang benar-benar positif.
+Precision = TP / (TP + FP)
+
+Recall: Proporsi kasus positif yang berhasil terprediksi dengan benar.
+Recall = TP / (TP + FN)
+
+F1 Score: Harmonic mean dari Precision dan Recall, berguna saat data agak imbalance.
+F1 Score = 2 x ((Precision * Recall) / (Precision + Recall))
+
+
+```
+from sklearn.metrics import classification_report
+
+models = {'Decision Tree': dt,
+          'Random Forest': rf,
+          'Naive Bayes': nb,
+          'KNN': knn}
+
+for name, model in models.items():
+    print(f"\n{name}:\n")
+    y_pred = model.predict(X_test)
+    print(classification_report(y_test, y_pred))
+
+```
+Decision Tree:
+
+              precision    recall  f1-score   support
+
+           0       0.98      0.99      0.99       753
+           1       1.00      1.00      1.00      4047
+
+    accuracy                           1.00      4800
+   macro avg       0.99      0.99      0.99      4800
+weighted avg       1.00      1.00      1.00      4800
+
+
+Random Forest:
+
+              precision    recall  f1-score   support
+
+           0       0.99      1.00      0.99       753
+           1       1.00      1.00      1.00      4047
+
+    accuracy                           1.00      4800
+   macro avg       1.00      1.00      1.00      4800
+weighted avg       1.00      1.00      1.00      4800
+
+
+Naive Bayes:
+
+              precision    recall  f1-score   support
+
+           0       0.36      1.00      0.53       753
+           1       1.00      0.67      0.80      4047
+
+    accuracy                           0.72      4800
+   macro avg       0.68      0.84      0.67      4800
+weighted avg       0.90      0.72      0.76      4800
+
+
+KNN:
+
+              precision    recall  f1-score   support
+
+           0       0.96      0.96      0.96       753
+           1       0.99      0.99      0.99      4047
+
+    accuracy                           0.99      4800
+   macro avg       0.97      0.98      0.98      4800
+weighted avg       0.99      0.99      0.99      4800
+
+Untuk mengevaluasi kinerja model klasifikasi, digunakan metrik accuracy, precision, recall, dan F1-score. Meskipun data tidak seimbang (20067 Rejected vs 3933 Approved), metrik accuracy tetap dijadikan dasar pemilihan model terbaik karena mengacu pada referensi penelitian sebelumnya.
 
 Berikut ringkasan hasil evaluasi keempat model:
 
-- **Decision Tree** menunjukkan akurasi mendekati sempurna (100%), dengan performa yang baik untuk kedua kelas.
-- **Random Forest** tampil sebagai model dengan akurasi 100% dan nilai precision, recall, serta F1-score yang merata di semua kelas.
-- **Naive Bayes** memiliki akurasi yang jauh lebih rendah (72%), terutama karena kesulitan dalam mengenali kelas Approved secara akurat.
-- **KNN** menunjukkan akurasi tinggi (99%) dengan performa yang stabil dan seimbang antar kelas.
+1. **Decision Tree** menunjukkan akurasi mendekati sempurna (100%), dengan performa yang sangat baik di kedua kelas.
 
-Dua model yang mencetak akurasi sempurna adalah Random Forest dan Decision Tree. Namun, Random Forest dipilih sebagai model terbaik karena kemampuannya dalam mengurangi overfitting melalui teknik ensemble dan menghasilkan evaluasi yang lebih stabil secara umum.
+2. **Random Forest** juga memberikan akurasi 100%, dengan precision, recall, dan F1-score yang tinggi dan merata di semua kelas.
+
+3. **Naive Bayes** memiliki akurasi jauh lebih rendah (72%), terutama karena kesulitan dalam mengenali kelas Approved secara akurat.
+
+4. **KNN** menunjukkan akurasi tinggi (99%) dengan performa yang cukup stabil dan seimbang antar kelas.
+
+Model yang mendapatkan akurasi tertinggi adalah Decision Tree dan Random Forest, yang keduanya mencatatkan performa sempurna di data uji. 
+
+Namun, karena Decision Tree cenderung overfitting terhadap data latih dan kurang stabil terhadap perubahan data, **maka Random Forest dipilih sebagai model terbaik.** 
 
 ### Hubungan dengan Business Understanding
 
-Evaluasi model menunjukkan bahwa proyek ini berhasil menjawab semua problem statement dan mencapai tujuan yang telah ditetapkan:
 
-- Model berhasil memanfaatkan data terstruktur untuk memprediksi apakah pengajuan pinjaman akan disetujui atau ditolak. Keakuratan tinggi dari Random Forest menunjukkan bahwa data finansial dapat digunakan secara efektif untuk prediksi ini.
-- Model terbaik telah teridentifikasi berdasarkan metrik evaluasi, menjawab pertanyaan mengenai algoritma machine learning yang paling efektif dalam konteks ini.
-- Semua solusi yang dirancang—dari preprocessing, pemilihan algoritma, hingga evaluasi berbasis metrik—telah diimplementasikan dan terbukti efektif.
+Evaluasi model menunjukkan bahwa proyek ini berhasil menjawab semua problem statement dan mencapai goals yang telah ditetapkan:
 
-Dengan demikian, hasil proyek ini berdampak langsung pada efisiensi dan akurasi proses persetujuan pinjaman, sesuai dengan konteks awal business understanding. Model yang dibangun berpotensi diintegrasikan ke sistem otomasi untuk membantu lembaga keuangan dalam mengurangi risiko dan mempercepat pengambilan keputusan berbasis data.
+- Problem Statement 1: Model berhasil memanfaatkan data terstruktur untuk memprediksi apakah pengajuan pinjaman akan disetujui atau ditolak. Keakuratan tinggi dari Random Forest menunjukkan bahwa data finansial dapat digunakan secara efektif untuk prediksi ini.
 
-## Future Development
+- Problem Statement 2: Model terbaik (Random Forest) telah teridentifikasi berdasarkan metrik evaluasi, menjawab pertanyaan mengenai algoritma machine learning yang paling efektif dalam konteks ini.
+
+- Goals: Model klasifikasi berhasil dikembangkan dan dibandingkan. Hasil evaluasi menunjukkan bahwa tujuan menentukan model terbaik berdasarkan akurasi telah tercapai, dengan Random Forest sebagai kandidat terkuat.
+
+- Solution Statement: Seluruh solusi yang dirancang—mulai dari preprocessing (encoding & normalisasi), pemilihan algoritma, hingga evaluasi berbasis metrik—telah diimplementasikan dan terbukti efektif. Evaluasi menyeluruh juga mendukung penggunaan accuracy sebagai metrik utama.
+
+
+### Future development
 
 Walaupun model yang dibangun telah menunjukkan performa yang sangat tinggi, proyek ini masih memiliki ruang pengembangan lebih lanjut. Di antaranya adalah:
 
