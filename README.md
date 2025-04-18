@@ -74,20 +74,53 @@ Fitur Text tidak digunakan dalam proyek ini untuk menjaga fokus pada pemodelan b
 Beberapa visualisasi dilakukan untuk memahami pola dalam data:
 
 - preview dataset
-<p align='center'>
-      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/preview%20dataset.png?raw=true" alt="preview dataset"> 
-</p>
+```
+df.head()
+```
+
+| Text                                                       | Income | Credit_Score | Loan_Amount | DTI_Ratio | Employment_Status | Approval |
+|------------------------------------------------------------|--------|--------------|-------------|-----------|-------------------|----------|
+| I need a loan to pay for an international vaca...         | 26556  | 581          | 8314        | 79.26     | employed          | Rejected |
+| I want to make home improvements like installi...         | 197392 | 389          | 111604      | 22.14     | employed          | Rejected |
+| I need a loan for home renovation, including a...         | 44561  | 523          | 34118       | 45.44     | employed          | Rejected |
+| I need funds to buy new furniture and applianc...         | 190363 | 729          | 118757      | 10.22     | unemployed        | Rejected |
+| I need a loan to start a small business.                   | 61853  | 732          | 19210       | 44.13     | employed          | Approved |
+
 
 - cek null values
-<p align='center'>
-      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/null_values.png?raw=true" alt="null values"> 
-</p>
+```
+df.isnull().sum()
+```
+
+| Kolom             |  |
+|-------------------|----------------|
+| Text              | 0              |
+| Income            | 0              |
+| Credit_Score      | 0              |
+| Loan_Amount       | 0              |
+| DTI_Ratio         | 0              |
+| Employment_Status | 0              |
+| Approval          | 0              |
+dtype: int64
+
 Tidak ditemukan adanya null values.
 
 - Cek jumlah data
-<p align='center'>
-      <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/samples.png?raw=true" alt="samples"> 
-</p>
+
+```
+df.count()
+```
+
+| Kolom             |   |
+|-------------------|-------------|
+| Text              | 24000       |
+| Income            | 24000       |
+| Credit_Score      | 24000       |
+| Loan_Amount       | 24000       |
+| DTI_Ratio         | 24000       |
+| Employment_Status | 24000       |
+| Approval          | 24000       |
+
 Terdapat 24.000 samples
 
 - Distribusi target
@@ -97,9 +130,10 @@ Terdapat 24.000 samples
 
 `df['Approval'].value_counts()`
 
-Rejected  :	20067
-
-Approved  :	3933
+| Approval |  |
+|----------|--------|
+| Rejected | 20067  |
+| Approved | 3933   |
 
 Grafik ini menunjukkan bahwa jumlah permohonan pinjaman yang ditolak jauh lebih banyak dibandingkan yang disetujui. Hal ini mengindikasikan ketidakseimbangan kelas dalam data, yang dapat memengaruhi performa model klasifikasi jika tidak ditangani dengan tepat.
 
@@ -277,16 +311,20 @@ Tahap ini berfokus pada evaluasi performa dari setiap model klasifikasi yang tel
 Metrik Evaluasi yang Digunakan:
 
 Accuracy: Persentase prediksi yang benar dari seluruh data.
-Accuracy = (TP + TN) / (TP + TN + FP + FN)
+
+>Accuracy = (TP + TN) / (TP + TN + FP + FN)
 
 Precision: Proporsi prediksi positif yang benar-benar positif.
-Precision = TP / (TP + FP)
+
+>Precision = TP / (TP + FP)
 
 Recall: Proporsi kasus positif yang berhasil terprediksi dengan benar.
-Recall = TP / (TP + FN)
+
+>Recall = TP / (TP + FN)
 
 F1 Score: Harmonic mean dari Precision dan Recall, berguna saat data agak imbalance.
-F1 Score = 2 x ((Precision * Recall) / (Precision + Recall))
+
+>F1 Score = 2 x ((Precision * Recall) / (Precision + Recall))
 
 
 ```
@@ -303,52 +341,13 @@ for name, model in models.items():
     print(classification_report(y_test, y_pred))
 
 ```
-Decision Tree:
 
-              precision    recall  f1-score   support
-
-           0       0.98      0.99      0.99       753
-           1       1.00      1.00      1.00      4047
-
-    accuracy                           1.00      4800
-   macro avg       0.99      0.99      0.99      4800
-weighted avg       1.00      1.00      1.00      4800
-
-
-Random Forest:
-
-              precision    recall  f1-score   support
-
-           0       0.99      1.00      0.99       753
-           1       1.00      1.00      1.00      4047
-
-    accuracy                           1.00      4800
-   macro avg       1.00      1.00      1.00      4800
-weighted avg       1.00      1.00      1.00      4800
-
-
-Naive Bayes:
-
-              precision    recall  f1-score   support
-
-           0       0.36      1.00      0.53       753
-           1       1.00      0.67      0.80      4047
-
-    accuracy                           0.72      4800
-   macro avg       0.68      0.84      0.67      4800
-weighted avg       0.90      0.72      0.76      4800
-
-
-KNN:
-
-              precision    recall  f1-score   support
-
-           0       0.96      0.96      0.96       753
-           1       0.99      0.99      0.99      4047
-
-    accuracy                           0.99      4800
-   macro avg       0.97      0.98      0.98      4800
-weighted avg       0.99      0.99      0.99      4800
+| Model         | Accuracy | Precision (0) | Recall (0) | F1-Score (0) | Precision (1) | Recall (1) | F1-Score (1) | Macro Avg (F1) | Weighted Avg (F1) |
+|---------------|----------|---------------|------------|--------------|----------------|-------------|---------------|------------------|---------------------|
+| Decision Tree | 1.00     | 0.98          | 0.99       | 0.99         | 1.00           | 1.00        | 1.00          | 0.99             | 1.00                |
+| Random Forest | 1.00     | 0.99          | 1.00       | 0.99         | 1.00           | 1.00        | 1.00          | 1.00             | 1.00                |
+| Naive Bayes   | 0.72     | 0.36          | 1.00       | 0.53         | 1.00           | 0.67        | 0.80          | 0.67             | 0.76                |
+| KNN           | 0.99     | 0.96          | 0.96       | 0.96         | 0.99           | 0.99        | 0.99          | 0.98             | 0.99                |
 
 Untuk mengevaluasi kinerja model klasifikasi, digunakan metrik accuracy, precision, recall, dan F1-score. Meskipun data tidak seimbang (20067 Rejected vs 3933 Approved), metrik accuracy tetap dijadikan dasar pemilihan model terbaik karena mengacu pada referensi penelitian sebelumnya.
 
