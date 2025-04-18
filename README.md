@@ -226,7 +226,8 @@ Data dibagi menjadi data latih dan data uji agar kita bisa mengukur performa mod
 ## Modelling
 
 Tahap ini melibatkan pembangunan beberapa model klasifikasi untuk memprediksi persetujuan pinjaman. Setiap model memiliki karakteristik dan cara kerja yang berbeda.
-- Model 1: Decision Tree
+
+#### **Model 1: Decision Tree**
 
 Cara kerja: Decision Tree membagi data berdasarkan fitur yang memberikan informasi paling tinggi (dengan pengukuran seperti Gini atau Entropy). Setiap cabang merepresentasikan keputusan hingga mencapai leaf node (output prediksi).
 
@@ -241,16 +242,15 @@ from sklearn.tree import DecisionTreeClassifier
 dt = DecisionTreeClassifier(criterion='gini', random_state=42)
 dt.fit(X_train, y_train)
 ```
-Kelebihan:
-Mudah dipahami dan divisualisasikan.
+  - Kelebihan:
+    - Mudah dipahami dan divisualisasikan.
+    - Tidak memerlukan normalisasi data.
 
-Tidak memerlukan normalisasi data.
-
-Kekurangan:
-Rentan overfitting jika pohon terlalu dalam.
+  - Kekurangan:
+    - Rentan overfitting jika pohon terlalu dalam.
 
 
-- Model 2: Random Forest
+#### **Model 2: Random Forest**
 Cara kerja: Random Forest membangun banyak Decision Tree dari subset data acak dan menggabungkan hasilnya (mayoritas voting) untuk meningkatkan akurasi dan mengurangi overfitting.
 
 Parameter:
@@ -265,7 +265,7 @@ rf = RandomForestClassifier(n_estimators=100, random_state=42)
 rf.fit(X_train, y_train)
 ```
 
-- Model 3: Naive Bayes (GaussianNB)
+#### Model 3: Naive Bayes (GaussianNB)
 Cara kerja: Naive Bayes menggunakan Teorema Bayes dengan asumsi bahwa semua fitur saling independen. GaussianNB cocok untuk data numerik yang terdistribusi normal.
 
 Parameter: Model ini tidak membutuhkan banyak tuning parameter secara eksplisit.
@@ -276,17 +276,14 @@ nb = GaussianNB()
 nb.fit(X_train, y_train)
 ```
 
-Kelebihan:
-Cepat dan efisien untuk dataset besar.
+  - Kelebihan:
+    - Cepat dan efisien untuk dataset besar.
 
-Cocok untuk baseline model.
+  - Kekurangan:
+    - Asumsi independensi sering tidak realistis.
+    - Tidak bekerja baik jika fitur sangat bergantung satu sama lain.
 
-Kekurangan:
-Asumsi independensi sering tidak realistis.
-
-Tidak bekerja baik jika fitur sangat bergantung satu sama lain.
-
-- Model 4: K-Nearest Neighbors (KNN)
+#### **Model 4: K-Nearest Neighbors (KNN)**
 Cara kerja: KNN mengklasifikasikan data berdasarkan mayoritas label dari k data terdekat dalam ruang fitur. Jarak biasanya dihitung menggunakan Euclidean Distance.
 
 Parameter:
@@ -295,16 +292,19 @@ Parameter:
 
 `metric='minkowski'`: Default untuk menghitung Euclidean Distance.
 
-Kelebihan:
-Sederhana dan tidak memerlukan pelatihan eksplisit.
+```
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors=5, metric='minkowski')
+knn.fit(X_train, y_train)
+```
 
-Cocok untuk dataset kecil.
+`- Kelebihan:
+    - Sederhana dan tidak memerlukan pelatihan eksplisit.
+    - Cocok untuk dataset kecil.
 
-Kekurangan:
-Tidak efisien untuk dataset besar.
-
-Sensitif terhadap skala fitur (perlu normalisasi).
-
+  - Kekurangan:
+    - Tidak efisien untuk dataset besar.
+    - Sensitif terhadap skala fitur (perlu normalisasi).
 
 ## Evaluation
 
