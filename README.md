@@ -1,4 +1,5 @@
-  # Predictive Analysis of Loan Approval Classification
+# Predictive Analysis of Loan Approval Classification
+#### Achmad Fariz Rizky Yanuar - Universitas Sriwijaya
 
 ## Domain Background
 
