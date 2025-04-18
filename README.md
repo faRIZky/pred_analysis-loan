@@ -128,7 +128,9 @@ Terdapat 24.000 samples
       <img src ="https://github.com/faRIZky/pred_analysis-loan/blob/main/images/distribusi%20approval.png?raw=true" alt="distribusi target"> 
 </p>
 
-`df['Approval'].value_counts()`
+```
+df['Approval'].value_counts()
+```
 
 | Approval |  |
 |----------|--------|
