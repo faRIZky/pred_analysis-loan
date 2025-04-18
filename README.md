@@ -378,7 +378,7 @@ Evaluasi model menunjukkan bahwa proyek ini berhasil menjawab semua problem stat
 
 - Goals: Model klasifikasi berhasil dikembangkan dan dibandingkan. Hasil evaluasi menunjukkan bahwa tujuan menentukan model terbaik berdasarkan akurasi telah tercapai, dengan Random Forest sebagai kandidat terkuat.
 
-- Solution Statement: Seluruh solusi yang dirancang—mulai dari preprocessing (encoding & normalisasi), pemilihan algoritma, hingga evaluasi berbasis metrik—telah diimplementasikan dan terbukti efektif. Evaluasi menyeluruh juga mendukung penggunaan accuracy sebagai metrik utama.
+- Solution Statement: Seluruh solusi yang dirancang—mulai dari preprocessing (encoding & normalisasi), pemilihan algoritma, hingga evaluasi berbasis metrik—telah berhasil diimplementasikan. Evaluasi menyeluruh juga mendukung penggunaan accuracy sebagai metrik utama.
 
 
 ### Future development
